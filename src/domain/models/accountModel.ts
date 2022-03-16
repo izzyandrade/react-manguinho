@@ -1,3 +1,3 @@
 export type AccountModel = {
-  token: string
-}
+  token: string;
+};
