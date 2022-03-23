@@ -1,10 +1,11 @@
-import { HttpPostClient } from "@/data/protocols/http/http-post-client";
-import { HttpStatusCode } from "@/data/protocols/http/http-response";
-import { InvalidCredentialsError } from "@/domain/error/invalid-credentials";
-import { NotFoundError } from "@/domain/error/not-found";
-import { ServerError } from "@/domain/error/server-error";
-import { UnexpectedError } from "@/domain/error/unexpected-error";
-import { AccountModel } from "@/domain/models/accountModel";
+import { HttpPostClient, HttpStatusCode } from "@/data/protocols/http";
+import {
+  InvalidCredentialsError,
+  NotFoundError,
+  ServerError,
+  UnexpectedError,
+} from "@/domain/error";
+import { AccountModel } from "@/domain/models";
 import {
   Authentication,
   AuthenticationParams,
