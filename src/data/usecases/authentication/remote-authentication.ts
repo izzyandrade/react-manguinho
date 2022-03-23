@@ -5,9 +5,12 @@ import { NotFoundError } from "@/domain/error/not-found";
 import { ServerError } from "@/domain/error/server-error";
 import { UnexpectedError } from "@/domain/error/unexpected-error";
 import { AccountModel } from "@/domain/models/accountModel";
-import { AuthenticationParams } from "@/domain/usecases/authentication";
+import {
+  Authentication,
+  AuthenticationParams,
+} from "@/domain/usecases/authentication";
 
-export class RemoteAuthentication {
+export class RemoteAuthentication implements Authentication {
   constructor(
     private readonly url: string,
     private readonly httpPostClient: HttpPostClient<
@@ -16,14 +19,14 @@ export class RemoteAuthentication {
     >
   ) {}
 
-  async auth(params: AuthenticationParams): Promise<void> {
+  async auth(params: AuthenticationParams): Promise<AccountModel> {
     const httpResponse = await this.httpPostClient.post({
       url: this.url,
       body: params,
     });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
-        break;
+        return httpResponse.body;
       case HttpStatusCode.unauthorized:
         throw new InvalidCredentialsError();
       case HttpStatusCode.notFound:
