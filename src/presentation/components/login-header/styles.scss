@@ -1,0 +1,18 @@
+@import "../../styles/colors";
+
+.header {
+  border-top: 40px solid $darkGrey;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: $primary;
+
+  img {
+    margin-top: 40px;
+  }
+
+  h1 {
+    color: $white;
+    margin: 16px 0px 40px;
+  }
+}

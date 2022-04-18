@@ -50,23 +50,6 @@ button {
   justify-content: space-between;
   height: 100vh;
 
-  .header {
-    border-top: 40px solid $darkGrey;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    background-color: $primary;
-
-    img {
-      margin-top: 40px;
-    }
-
-    h1 {
-      color: $white;
-      margin: 16px 0px 40px;
-    }
-  }
-
   .form {
     display: flex;
     flex-direction: column;
@@ -128,10 +111,5 @@ button {
         margin-top: 20px;
       }
     }
-  }
-
-  .footer {
-    background-color: $primary;
-    height: 40px;
   }
 }
