@@ -1,4 +1,4 @@
 {
-  "*.{ts,tsx}": ["eslint 'src/**' --fix", "npm run test:staged"]
+  "*.{ts,tsx}": ["stylelint './src/**/*.scss' --fix", "eslint 'src/**' --fix", "npm run test:staged"]
 }
 
