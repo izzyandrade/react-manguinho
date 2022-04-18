@@ -69,23 +69,6 @@ button {
       text-transform: uppercase;
     }
 
-    .inputWrap {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      width: 100%;
-      position: relative;
-
-      input {
-      }
-
-      .inputStatus {
-        position: absolute;
-        right: 10px;
-        cursor: help;
-      }
-    }
-
     .signUpLink {
       text-align: center;
       color: $darkGrey;
