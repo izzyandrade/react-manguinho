@@ -1,49 +1,5 @@
 @import "../../styles/colors";
 
-* {
-  font-family: "Roboto", sans-serif;
-  font-size: 14px;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: $lightGrey;
-}
-
-input[type="password"],
-input[type="email"] {
-  border: 1px solid grey;
-  border-radius: 4px;
-  line-height: 40px;
-  background-color: $lightGrey;
-  color: $black;
-  font-size: 14px;
-  font-weight: 300;
-  width: 100%;
-  padding: 0 40px 0 10px;
-  &:focus {
-    outline-color: $darkGrey;
-  }
-}
-
-button {
-  background-color: $primary;
-  color: $white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  line-height: 40px;
-  padding: 10px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
-  &:hover {
-    opacity: 0.9;
-  }
-}
-
 .login {
   display: flex;
   flex-direction: column;
