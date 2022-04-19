@@ -18,6 +18,8 @@ const Login: React.FC = () => {
     isLoading: false,
     errorMessage: "",
   });
+  const [emailStatus] = useState("🔴");
+  const [passwordStatus] = useState("🔴");
   return (
     <div className={Styles.login}>
       <LoginHeader />
@@ -25,11 +27,17 @@ const Login: React.FC = () => {
       <FormContext.Provider value={state}>
         <form className={Styles.form}>
           <h2>Login</h2>
-          <Input type="email" name="email" placeholder="Insira seu email" />
+          <Input
+            type="email"
+            name="email"
+            placeholder="Insira seu email"
+            status={emailStatus}
+          />
           <Input
             type="password"
             name="password"
             placeholder="Insira sua senha"
+            status={passwordStatus}
           />
           <button
             className={Styles.submit}
