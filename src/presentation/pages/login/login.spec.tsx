@@ -9,7 +9,11 @@ type SutTypes = {
   validationStub: ValidationStub;
 };
 
-const makeSut = (errorMessage?: string): SutTypes => {
+type SutParams = {
+  errorMessage?: string;
+};
+
+const makeSut = ({ errorMessage }: SutParams = {}): SutTypes => {
   const validationStub = new ValidationStub();
   validationStub.errorMessage = errorMessage || null;
   const sut = render(<Login validation={validationStub} />);
@@ -21,7 +25,9 @@ const makeSut = (errorMessage?: string): SutTypes => {
 
 describe("Login Component", () => {
   test("Should start with initial state", () => {
-    const { sut, validationStub } = makeSut(faker.random.words());
+    const { sut, validationStub } = makeSut({
+      errorMessage: faker.random.words(),
+    });
     const errorWrap = sut.getByTestId("error-wrap");
     expect(errorWrap.childElementCount).toBe(0);
     const submitButton = sut.getByTestId("submit-button") as HTMLButtonElement;
@@ -37,7 +43,9 @@ describe("Login Component", () => {
   });
 
   test("Should show email error if validation fails", () => {
-    const { sut, validationStub } = makeSut(faker.random.words());
+    const { sut, validationStub } = makeSut({
+      errorMessage: faker.random.words(),
+    });
     const emailInput = sut.getByTestId("email") as HTMLInputElement;
     fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
     const emailStatus = sut.getByTestId("email-status") as HTMLSpanElement;
@@ -46,7 +54,9 @@ describe("Login Component", () => {
   });
 
   test("Should show password error if validation fails", () => {
-    const { sut, validationStub } = makeSut(faker.random.words());
+    const { sut, validationStub } = makeSut({
+      errorMessage: faker.random.words(),
+    });
     const passwordInput = sut.getByTestId("password") as HTMLInputElement;
     fireEvent.input(passwordInput, {
       target: { value: faker.internet.password() },
