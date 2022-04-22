@@ -6,12 +6,12 @@ interface InputProps
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
+  errorMessage: string;
   status: string;
 }
 
 const Input: React.FC<InputProps> = (props: InputProps) => {
   const { setState, state } = useContext(FormContext);
-  const { status } = props;
 
   const handleChange = (event: React.FocusEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
@@ -29,8 +29,12 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
         onChange={handleChange}
         value={state[props.name]}
       />
-      <span data-testid={`${props.name}-status`} className={Styles.inputStatus}>
-        {status}
+      <span
+        title={props.errorMessage}
+        data-testid={`${props.name}-status`}
+        className={Styles.inputStatus}
+      >
+        {props.status}
       </span>
     </div>
   );
