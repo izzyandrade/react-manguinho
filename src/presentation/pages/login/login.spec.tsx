@@ -185,7 +185,7 @@ describe("Login Component", () => {
     expect(errorWrap.childElementCount).toBe(1);
   });
 
-  test("Should add accessToken to localStorage on auth success", async () => {
+  test("Should add accessToken to localStorage and naviagte to homepage on auth success", async () => {
     const { sut, authenticationSpy } = makeSut();
     simulateValidSubmit(sut);
     await waitFor(() => sut.getByTestId("form"));
@@ -193,6 +193,7 @@ describe("Login Component", () => {
       "token",
       authenticationSpy.account.token
     );
+    expect(mockedUseNavigate).toHaveBeenCalledWith("/", { replace: true });
   });
 
   test("Should go to signup page on clicking the link", () => {
