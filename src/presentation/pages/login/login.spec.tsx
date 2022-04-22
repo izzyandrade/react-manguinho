@@ -166,7 +166,6 @@ describe("Login Component", () => {
     await waitFor(() => errorWrap);
     const mainError = sut.getByTestId("main-error");
     expect(mainError.textContent).toBe(error.message);
-
     expect(errorWrap.childElementCount).toBe(1);
   });
 });
