@@ -9,36 +9,30 @@ interface InputProps
   error: string;
 }
 
-const Input: React.FC<InputProps> = ({ error, name, ...props }: InputProps) => {
+const Input: React.FC<InputProps> = (props: InputProps) => {
   const { setState, state } = useContext(FormContext);
 
   const handleChange = (event: React.FocusEvent<HTMLInputElement>): void => {
-    const { name, value } = event.target;
     setState({
       ...state,
-      [name]: value,
+      [event.target.name]: event.target.value,
     });
   };
 
   const getTitle = (): string => {
-    return error || "Tudo certo!";
+    return props.error || "Tudo certo!";
   };
 
   const getStatus = (): string => {
-    return error ? "🔴" : "🟢";
+    return props.error ? "🔴" : "🟢";
   };
 
   return (
     <div className={Styles.inputWrap}>
-      <input
-        {...props}
-        data-testid={name}
-        onChange={handleChange}
-        value={state[name]}
-      />
+      <input {...props} data-testid={props.name} onChange={handleChange} />
       <span
         title={getTitle()}
-        data-testid={`${name}-status`}
+        data-testid={`${props.name}-status`}
         className={Styles.inputStatus}
       >
         {getStatus()}
