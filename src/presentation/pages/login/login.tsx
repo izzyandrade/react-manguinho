@@ -60,6 +60,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
         password: state.password,
       });
       localStorage.setItem("token", response.token);
+      navigate("/", { replace: true });
     } catch (err) {
       setState({ ...state, errorMessage: err.message, isLoading: false });
     }
