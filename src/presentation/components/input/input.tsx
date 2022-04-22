@@ -6,8 +6,7 @@ interface InputProps
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  errorMessage: string;
-  status: string;
+  error: string;
 }
 
 const Input: React.FC<InputProps> = (props: InputProps) => {
@@ -21,6 +20,14 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
     });
   };
 
+  const getStatus = (): string => {
+    return props.error ? "🔴" : "🟢";
+  };
+
+  const getTitle = (): string => {
+    return props.error || "Tudo certo!";
+  };
+
   return (
     <div className={Styles.inputWrap}>
       <input
@@ -30,11 +37,11 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
         value={state[props.name]}
       />
       <span
-        title={props.errorMessage}
+        title={getTitle()}
         data-testid={`${props.name}-status`}
         className={Styles.inputStatus}
       >
-        {props.status}
+        {getStatus()}
       </span>
     </div>
   );
