@@ -14,10 +14,8 @@ type State = {
   errorMessage: string;
   email: string;
   password: string;
-  emailStatus: string;
   emailError: string;
   passwordError: string;
-  passwordStatus: string;
 };
 
 type Props = {
@@ -30,10 +28,8 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     errorMessage: "",
     email: "",
     password: "",
-    emailStatus: "🔴",
     emailError: "",
     passwordError: "",
-    passwordStatus: "🔴",
   });
 
   useEffect(() => {
@@ -55,15 +51,13 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
             type="email"
             name="email"
             placeholder="Insira seu email"
-            status={state.emailStatus}
-            errorMessage={state.emailError}
+            error={state.emailError}
           />
           <Input
             type="password"
             name="password"
             placeholder="Insira sua senha"
-            status={state.passwordStatus}
-            errorMessage={state.passwordError}
+            error={state.passwordError}
           />
           <button
             className={Styles.submit}
