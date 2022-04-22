@@ -9,6 +9,7 @@ import {
 import FormContext from "@/presentation/contexts/form/form-context";
 import { Validation } from "@/presentation/protocols/validation";
 import { Authentication } from "@/domain/usecases";
+import { useNavigate } from "react-router-dom";
 
 type State = {
   isLoading: boolean;
@@ -33,6 +34,8 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     emailError: "",
     passwordError: "",
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setState({
@@ -93,7 +96,13 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
           >
             Entrar
           </button>
-          <span className={Styles.signUpLink}>
+          <span
+            onClick={() => {
+              navigate("/signup");
+            }}
+            className={Styles.signUpLink}
+            data-testid="signup-link"
+          >
             Não tem uma conta? Cadastre-se
           </span>
           <FormStatus />
