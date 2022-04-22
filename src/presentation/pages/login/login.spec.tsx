@@ -1,5 +1,6 @@
 import React from "react";
 import Login from "./login";
+import { BrowserRouter } from "react-router-dom";
 import { ValidationStub, AuthenticationSpy } from "@/presentation/test";
 import "jest-localstorage-mock";
 import {
@@ -27,7 +28,9 @@ const makeSut = ({ errorMessage }: SutParams = {}): SutTypes => {
   const authenticationSpy = new AuthenticationSpy();
   validationStub.errorMessage = errorMessage || null;
   const sut = render(
-    <Login validation={validationStub} authentication={authenticationSpy} />
+    <BrowserRouter>
+      <Login validation={validationStub} authentication={authenticationSpy} />
+    </BrowserRouter>
   );
   return {
     sut,
@@ -35,6 +38,13 @@ const makeSut = ({ errorMessage }: SutParams = {}): SutTypes => {
     authenticationSpy,
   };
 };
+
+const mockedUseNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  ...(jest.requireActual("react-router-dom") as any),
+  useNavigate: () => mockedUseNavigate,
+}));
 
 const populateEmailField = (
   sut: RenderResult,
@@ -183,5 +193,12 @@ describe("Login Component", () => {
       "token",
       authenticationSpy.account.token
     );
+  });
+
+  test("Should go to signup page on clicking the link", () => {
+    const { sut } = makeSut();
+    const signUpLink = sut.getByTestId("signup-link");
+    fireEvent.click(signUpLink);
+    expect(mockedUseNavigate).toHaveBeenCalledWith("/signup");
   });
 });
