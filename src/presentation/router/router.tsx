@@ -1,13 +1,15 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Login } from "@/presentation/pages";
 import "@/presentation/styles/global.scss";
+import { makeLogin } from "@/main/factories/pages/login/login-factory";
 
-const Router: React.FC = () => {
+type Props = {};
+
+const Router: React.FC<Props> = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={makeLogin({})} />
       </Routes>
     </BrowserRouter>
   );
