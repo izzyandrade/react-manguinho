@@ -1,11 +1,13 @@
 executor: node/default # use the default executor defined within the orb
-steps:
-  - checkout
-  - node/install-packages:
-      pkg-manager: yarn
-  - run:
-      command: npm run lint
-      name: Run eslint
-  - run:
-      command: npm run test:ci
-      name: Run test coverage
+jobs:
+  test: # this can be any name you choose
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          command: npm run lint
+          name: Run eslint
+      - run:
+          command: npm run test:ci
+          name: Run test coverage
