@@ -1,8 +1,11 @@
 {
   "name": "manguinho-react",
   "version": "1.0.0",
-  "description": "",
+  "description": "React JS application using TDD, Clean Architecture, TypeScript and SOLID",
   "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "scripts": {
     "start": "webpack-dev-server --open",
     "test": "jest --passWithNoTests --no-cache --runInBand",
@@ -12,9 +15,6 @@
     "prepare": "husky install",
     "lint": "eslint --fix --ext .js,.jsx ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^6.0.0",
     "@testing-library/react": "^12.1.2",
