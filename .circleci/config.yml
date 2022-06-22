@@ -13,7 +13,7 @@ jobs:
           command: npm run lint
           name: Run eslint
       - run:
-          command: npm run test:ci
+          command: npm run test:coveralls
           name: Run test coverage
 
 workflows:
