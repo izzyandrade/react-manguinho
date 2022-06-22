@@ -1,6 +1,10 @@
-executor: node/default # use the default executor defined within the orb
+version: 2.1
+orbs:
+  node: circleci/node@5.0.2
+
 jobs:
-  test: # this can be any name you choose
+  test:
+    executor: node/default
     steps:
       - checkout
       - node/install-packages:
