@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
-          pkg-manager: yarn
+          pkg-manager: npm
       - run:
           command: npm run lint
           name: Run eslint
