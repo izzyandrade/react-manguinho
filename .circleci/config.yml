@@ -15,3 +15,8 @@ jobs:
       - run:
           command: npm run test:ci
           name: Run test coverage
+
+workflows:
+  CI:
+    jobs:
+      - test
