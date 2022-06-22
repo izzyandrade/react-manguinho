@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "./login";
+import { Login } from "@/presentation/pages";
 import { BrowserRouter } from "react-router-dom";
 import { ValidationStub, AuthenticationSpy } from "@/presentation/test";
 import "jest-localstorage-mock";
