@@ -13,7 +13,7 @@
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
     "prepare": "husky install",
-    "lint": "eslint --fix --ext .ts,.tsx ."
+    "lint": "eslint --fix --ext .ts,.tm sx ."
   },
   "devDependencies": {
     "@faker-js/faker": "^6.0.0",
