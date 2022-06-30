@@ -1,8 +1,11 @@
 import React from "react";
 import { Login } from "@/presentation/pages";
 import { BrowserRouter } from "react-router-dom";
-import { ValidationStub, AuthenticationSpy } from "@/presentation/test";
-import "jest-localstorage-mock";
+import {
+  ValidationStub,
+  AuthenticationSpy,
+  SaveAccessTokenMock,
+} from "@/presentation/test";
 import {
   cleanup,
   fireEvent,
@@ -17,6 +20,7 @@ type SutTypes = {
   sut: RenderResult;
   validationStub: ValidationStub;
   authenticationSpy: AuthenticationSpy;
+  saveAccessTokenMock: SaveAccessTokenMock;
 };
 
 type SutParams = {
@@ -26,16 +30,22 @@ type SutParams = {
 const makeSut = ({ errorMessage }: SutParams = {}): SutTypes => {
   const validationStub = new ValidationStub();
   const authenticationSpy = new AuthenticationSpy();
+  const saveAccessTokenMock = new SaveAccessTokenMock();
   validationStub.errorMessage = errorMessage || null;
   const sut = render(
     <BrowserRouter>
-      <Login validation={validationStub} authentication={authenticationSpy} />
+      <Login
+        validation={validationStub}
+        authentication={authenticationSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
     </BrowserRouter>
   );
   return {
     sut,
     validationStub,
     authenticationSpy,
+    saveAccessTokenMock,
   };
 };
 
@@ -109,9 +119,6 @@ const simulateValidSubmit = async (
 
 describe("Login Component", () => {
   afterEach(cleanup);
-  beforeEach(() => {
-    localStorage.clear();
-  });
   test("Should start with initial state", () => {
     const { sut, validationStub } = makeSut({
       errorMessage: faker.random.words(),
@@ -202,12 +209,11 @@ describe("Login Component", () => {
     expect(errorWrap.childElementCount).toBe(1);
   });
 
-  test("Should add accessToken to localStorage and naviagte to homepage on auth success", async () => {
-    const { sut, authenticationSpy } = makeSut();
+  test("Should call SaveAccessToken and navigate to homepage on auth success", async () => {
+    const { sut, authenticationSpy, saveAccessTokenMock } = makeSut();
     await simulateValidSubmit(sut);
-    expect(localStorage.setItem).toHaveBeenCalledWith(
-      "token",
-      authenticationSpy.account.token
+    expect(saveAccessTokenMock.accessToken).toBe(
+      authenticationSpy.account.accessToken
     );
     expect(mockedUseNavigate).toHaveBeenCalledWith("/", { replace: true });
   });
