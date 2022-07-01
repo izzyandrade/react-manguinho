@@ -4,6 +4,14 @@ import {
   HttpResponse,
   HttpStatusCode,
 } from "@/data/protocols/http";
+import faker from "@faker-js/faker";
+
+export const mockPostRequest = (): HttpPostParams<any> => {
+  return {
+    url: faker.internet.url(),
+    body: faker.internet.exampleEmail(),
+  };
+};
 
 export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
   url?: string;
