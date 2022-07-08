@@ -5,6 +5,7 @@ import {
   ValidationStub,
   AuthenticationSpy,
   SaveAccessTokenMock,
+  Helper,
 } from "@/presentation/test";
 import {
   cleanup,
@@ -61,33 +62,6 @@ const testElementExists = (sut: RenderResult, fieldName: string): void => {
   expect(fieldToCheck).toBeTruthy();
 };
 
-const testChildCount = (
-  sut: RenderResult,
-  field: string,
-  expectedCount: number
-): void => {
-  const fieldById = sut.getByTestId(field);
-  expect(fieldById.childElementCount).toBe(expectedCount);
-};
-
-const testButtonIsDisabled = (
-  sut: RenderResult,
-  fieldName: string,
-  isDisabled: boolean
-): void => {
-  const button = sut.getByTestId(fieldName) as HTMLButtonElement;
-  expect(button.disabled).toBe(isDisabled);
-};
-
-const testElementText = (
-  sut: RenderResult,
-  fieldName: string,
-  text: string
-): void => {
-  const fieldToBeTested = sut.getByTestId(fieldName);
-  expect(fieldToBeTested.textContent).toBe(text);
-};
-
 const populateEmailField = (
   sut: RenderResult,
   emailValue = faker.internet.email()
@@ -102,16 +76,6 @@ const populatePasswordField = (
 ): void => {
   const passwordInput = sut.getByTestId("password") as HTMLInputElement;
   fireEvent.input(passwordInput, { target: { value: passwordValue } });
-};
-
-const validateInputStatus = (
-  sut: RenderResult,
-  inputField: string,
-  validationError?: string
-): void => {
-  const inputElement = sut.getByTestId(`${inputField}-status`);
-  expect(inputElement.title).toBe(validationError || "Tudo certo!");
-  testElementText(sut, `${inputField}-status`, validationError ? "🔴" : "🟢");
 };
 
 const simulateValidSubmit = async (
@@ -132,10 +96,10 @@ describe("Login Component", () => {
     const { sut, validationStub } = makeSut({
       errorMessage: faker.random.words(),
     });
-    testChildCount(sut, "error-wrap", 0);
-    testButtonIsDisabled(sut, "submit-button", true);
-    validateInputStatus(sut, "email", validationStub.errorMessage);
-    validateInputStatus(sut, "password", validationStub.errorMessage);
+    Helper.testChildCount(sut, "error-wrap", 0);
+    Helper.testButtonIsDisabled(sut, "submit-button", true);
+    Helper.validateInputStatus(sut, "email", validationStub.errorMessage);
+    Helper.validateInputStatus(sut, "password", validationStub.errorMessage);
   });
 
   test("Should show email error if validation fails", () => {
@@ -143,7 +107,7 @@ describe("Login Component", () => {
       errorMessage: faker.random.words(),
     });
     populateEmailField(sut);
-    validateInputStatus(sut, "email", validationStub.errorMessage);
+    Helper.validateInputStatus(sut, "email", validationStub.errorMessage);
   });
 
   test("Should show password error if validation fails", () => {
@@ -151,26 +115,26 @@ describe("Login Component", () => {
       errorMessage: faker.random.words(),
     });
     populatePasswordField(sut);
-    validateInputStatus(sut, "password", validationStub.errorMessage);
+    Helper.validateInputStatus(sut, "password", validationStub.errorMessage);
   });
 
   test("Should show valid email state if validation succeeds", () => {
     const { sut } = makeSut();
     populateEmailField(sut);
-    validateInputStatus(sut, "email");
+    Helper.validateInputStatus(sut, "email");
   });
 
   test("Should show valid password state if validation succeeds", () => {
     const { sut } = makeSut();
     populatePasswordField(sut);
-    validateInputStatus(sut, "password");
+    Helper.validateInputStatus(sut, "password");
   });
 
   test("Should enable submit button if form is valid", () => {
     const { sut } = makeSut();
     populateEmailField(sut);
     populatePasswordField(sut);
-    testButtonIsDisabled(sut, "submit-button", false);
+    Helper.testButtonIsDisabled(sut, "submit-button", false);
   });
 
   test("Should show spinner on authentication loading", async () => {
@@ -213,7 +177,7 @@ describe("Login Component", () => {
       .mockReturnValueOnce(Promise.reject(error));
     await simulateValidSubmit(sut);
     const errorWrap = sut.getByTestId("error-wrap");
-    testElementText(sut, "main-error", error.message);
+    Helper.testElementText(sut, "main-error", error.message);
     expect(errorWrap.childElementCount).toBe(1);
   });
 
