@@ -6,7 +6,7 @@ interface InputProps
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  error: string;
+  error?: string;
 }
 
 const Input: React.FC<InputProps> = (props: InputProps) => {

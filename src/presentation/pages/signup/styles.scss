@@ -1,0 +1,56 @@
+@import "../../styles/colors";
+
+.signUp {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 400px;
+    background-color: $white;
+    padding: 40px;
+    border-radius: 8px;
+    align-self: center;
+    box-shadow: 0px 1px 3px -1px $black;
+
+    .submit {
+      color: $white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      line-height: 40px;
+      padding: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      background-color: $primary;
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+
+    h2 {
+      color: $darkGrey;
+      text-align: center;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+
+    .loginLink {
+      text-align: center;
+      color: $darkGrey;
+      font-size: 14px;
+      margin-top: 10px;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+}
