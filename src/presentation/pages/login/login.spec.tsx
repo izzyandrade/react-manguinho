@@ -61,6 +61,15 @@ const testElementExists = (sut: RenderResult, fieldName: string): void => {
   expect(fieldToCheck).toBeTruthy();
 };
 
+const testChildCount = (
+  sut: RenderResult,
+  field: string,
+  expectedCount: number
+): void => {
+  const fieldById = sut.getByTestId(field);
+  expect(fieldById.childElementCount).toBe(expectedCount);
+};
+
 const testButtonIsDisabled = (
   sut: RenderResult,
   fieldName: string,
@@ -123,8 +132,7 @@ describe("Login Component", () => {
     const { sut, validationStub } = makeSut({
       errorMessage: faker.random.words(),
     });
-    const errorWrap = sut.getByTestId("error-wrap");
-    expect(errorWrap.childElementCount).toBe(0);
+    testChildCount(sut, "error-wrap", 0);
     testButtonIsDisabled(sut, "submit-button", true);
     validateInputStatus(sut, "email", validationStub.errorMessage);
     validateInputStatus(sut, "password", validationStub.errorMessage);
