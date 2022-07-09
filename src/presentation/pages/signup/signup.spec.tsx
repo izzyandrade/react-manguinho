@@ -33,11 +33,7 @@ describe("SignUp Component", () => {
     Helper.validateInputStatus(sut, "email", errorMessage);
     Helper.validateInputStatus(sut, "name", errorMessage);
     Helper.validateInputStatus(sut, "password", errorMessage);
-    Helper.validateInputStatus(
-      sut,
-      "passwordConfirmation",
-      "Campo obrigatório!"
-    );
+    Helper.validateInputStatus(sut, "passwordConfirmation", errorMessage);
   });
 
   test("Should show email error if validation fails", () => {
@@ -62,5 +58,17 @@ describe("SignUp Component", () => {
     });
     Helper.populateField(sut, "password");
     Helper.validateInputStatus(sut, "password", validationStub.errorMessage);
+  });
+
+  test("Should show passwordConfirmation error if validation fails", () => {
+    const { sut, validationStub } = makeSut({
+      errorMessage: faker.random.words(),
+    });
+    Helper.populateField(sut, "passwordConfirmation");
+    Helper.validateInputStatus(
+      sut,
+      "passwordConfirmation",
+      validationStub.errorMessage
+    );
   });
 });
