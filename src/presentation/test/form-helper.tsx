@@ -1,4 +1,5 @@
-import { RenderResult } from "@testing-library/react";
+import faker from "@faker-js/faker";
+import { fireEvent, RenderResult } from "@testing-library/react";
 
 export const testElementText = (
   sut: RenderResult,
@@ -35,4 +36,13 @@ export const validateInputStatus = (
   const inputElement = sut.getByTestId(`${inputField}-status`);
   expect(inputElement.title).toBe(validationError || "Tudo certo!");
   testElementText(sut, `${inputField}-status`, validationError ? "🔴" : "🟢");
+};
+
+export const populateField = (
+  sut: RenderResult,
+  fieldName: string,
+  value = faker.random.word()
+): void => {
+  const field = sut.getByTestId(fieldName) as HTMLInputElement;
+  fireEvent.input(field, { target: { value } });
 };
