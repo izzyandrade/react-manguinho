@@ -31,7 +31,7 @@ describe("SignUp Component", () => {
     Helper.testChildCount(sut, "error-wrap", 0);
     Helper.testButtonIsDisabled(sut, "submit-button", true);
     Helper.validateInputStatus(sut, "email", errorMessage);
-    Helper.validateInputStatus(sut, "name", "Campo obrigatório!");
+    Helper.validateInputStatus(sut, "name", errorMessage);
     Helper.validateInputStatus(sut, "password", "Campo obrigatório!");
     Helper.validateInputStatus(
       sut,
@@ -46,5 +46,13 @@ describe("SignUp Component", () => {
     });
     Helper.populateField(sut, "email");
     Helper.validateInputStatus(sut, "email", validationStub.errorMessage);
+  });
+
+  test("Should show name error if validation fails", () => {
+    const { sut, validationStub } = makeSut({
+      errorMessage: faker.random.words(),
+    });
+    Helper.populateField(sut, "name");
+    Helper.validateInputStatus(sut, "name", validationStub.errorMessage);
   });
 });
