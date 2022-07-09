@@ -7,12 +7,13 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react";
-import { Helper, ValidationStub } from "@/presentation/test";
+import { Helper, ValidationStub, AddAccountSpy } from "@/presentation/test";
 import faker from "@faker-js/faker";
 
 type SutTypes = {
   sut: RenderResult;
   validationStub: ValidationStub;
+  addAccountSpy: AddAccountSpy;
 };
 
 type SutParams = {
@@ -21,25 +22,29 @@ type SutParams = {
 
 const makeSut = ({ errorMessage }: SutParams = {}): SutTypes => {
   const validationStub = new ValidationStub();
+  const addAccountSpy = new AddAccountSpy();
   validationStub.errorMessage = errorMessage || null;
-  const sut = render(<SignUp validation={validationStub} />);
+  const sut = render(
+    <SignUp validation={validationStub} addAccount={addAccountSpy} />
+  );
   return {
     sut,
     validationStub,
+    addAccountSpy,
   };
 };
 
 const simulateValidSubmit = async (
   sut: RenderResult,
   emailValue = faker.internet.email(),
-  passwordValue = faker.internet.password(),
   nameValue = faker.name.firstName(),
+  passwordValue = faker.internet.password(),
   passwordConfirmationValue = faker.internet.password()
 ): Promise<void> => {
   Helper.populateField(sut, "email", emailValue);
-  Helper.populateField(sut, "password", nameValue);
+  Helper.populateField(sut, "name", nameValue);
   Helper.populateField(sut, "password", passwordValue);
-  Helper.populateField(sut, "password", passwordConfirmationValue);
+  Helper.populateField(sut, "passwordConfirmation", passwordConfirmationValue);
   const form = sut.getByTestId("form");
   fireEvent.submit(form);
   await waitFor(() => form);
@@ -131,5 +136,25 @@ describe("SignUp Component", () => {
     const { sut } = makeSut();
     await simulateValidSubmit(sut);
     Helper.testElementExists(sut, "spinner");
+  });
+
+  test("Should call AddAccount with correct values", async () => {
+    const { sut, addAccountSpy } = makeSut();
+    const nameValue = faker.name.findName();
+    const emailValue = faker.internet.email();
+    const passwordValue = faker.internet.password();
+    await simulateValidSubmit(
+      sut,
+      emailValue,
+      nameValue,
+      passwordValue,
+      passwordValue
+    );
+    expect(addAccountSpy.params).toEqual({
+      email: emailValue,
+      name: nameValue,
+      password: passwordValue,
+      passwordConfirmation: passwordValue,
+    });
   });
 });
