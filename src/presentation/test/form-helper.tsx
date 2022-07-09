@@ -46,3 +46,11 @@ export const populateField = (
   const field = sut.getByTestId(fieldName) as HTMLInputElement;
   fireEvent.input(field, { target: { value } });
 };
+
+export const testElementExists = (
+  sut: RenderResult,
+  fieldName: string
+): void => {
+  const fieldToCheck = sut.getByTestId(fieldName);
+  expect(fieldToCheck).toBeTruthy();
+};

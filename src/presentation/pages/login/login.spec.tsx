@@ -57,11 +57,6 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockedUseNavigate,
 }));
 
-const testElementExists = (sut: RenderResult, fieldName: string): void => {
-  const fieldToCheck = sut.getByTestId(fieldName);
-  expect(fieldToCheck).toBeTruthy();
-};
-
 const simulateValidSubmit = async (
   sut: RenderResult,
   emailValue = faker.internet.email(),
@@ -124,7 +119,7 @@ describe("Login Component", () => {
   test("Should show spinner on authentication loading", async () => {
     const { sut } = makeSut();
     await simulateValidSubmit(sut);
-    testElementExists(sut, "spinner");
+    Helper.testElementExists(sut, "spinner");
   });
 
   test("Should call Authentication with correct values", async () => {
