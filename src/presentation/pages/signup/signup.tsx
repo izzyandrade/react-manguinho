@@ -8,6 +8,7 @@ import {
 import FormContext from "@/presentation/contexts/form/form-context";
 import Styles from "./styles.scss";
 import { Validation } from "@/presentation/protocols/validation";
+import { AddAccount } from "@/domain/usecases";
 
 type State = {
   isLoading: boolean;
@@ -24,9 +25,10 @@ type State = {
 
 type SignUpProps = {
   validation: Validation;
+  addAccount: AddAccount;
 };
 
-const SignUp: React.FC<SignUpProps> = ({ validation }) => {
+const SignUp: React.FC<SignUpProps> = ({ validation, addAccount }) => {
   const [state, setState] = useState<State>({
     isLoading: false,
     errorMessage: "",
@@ -53,20 +55,32 @@ const SignUp: React.FC<SignUpProps> = ({ validation }) => {
     });
   }, [state.email, state.password, state.name, state.passwordConfirmation]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
-    if (
-      state.isLoading ||
-      state.emailError ||
-      state.nameError ||
-      state.passwordError ||
-      state.passwordConfirmationError
-    )
-      return;
-    setState({
-      ...state,
-      isLoading: true,
-    });
+    try {
+      if (
+        state.isLoading ||
+        state.emailError ||
+        state.nameError ||
+        state.passwordError ||
+        state.passwordConfirmationError
+      )
+        return;
+      setState({
+        ...state,
+        isLoading: true,
+      });
+      await addAccount.add({
+        email: state.email,
+        name: state.name,
+        password: state.password,
+        passwordConfirmation: state.passwordConfirmation,
+      });
+    } catch (err) {
+      setState({ ...state, errorMessage: err.message, isLoading: false });
+    }
   };
 
   return (
