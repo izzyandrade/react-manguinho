@@ -53,11 +53,31 @@ const SignUp: React.FC<SignUpProps> = ({ validation }) => {
     });
   }, [state.email, state.password, state.name, state.passwordConfirmation]);
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    if (
+      state.isLoading ||
+      state.emailError ||
+      state.nameError ||
+      state.passwordError ||
+      state.passwordConfirmationError
+    )
+      return;
+    setState({
+      ...state,
+      isLoading: true,
+    });
+  };
+
   return (
     <div className={Styles.signUp}>
       <LoginHeader />
       <FormContext.Provider value={{ state, setState }}>
-        <form className={Styles.form} data-testid="form">
+        <form
+          className={Styles.form}
+          data-testid="form"
+          onSubmit={handleSubmit}
+        >
           <h2>Cadastre-se</h2>
           <Input
             type="email"
