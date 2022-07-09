@@ -32,7 +32,7 @@ describe("SignUp Component", () => {
     Helper.testButtonIsDisabled(sut, "submit-button", true);
     Helper.validateInputStatus(sut, "email", errorMessage);
     Helper.validateInputStatus(sut, "name", errorMessage);
-    Helper.validateInputStatus(sut, "password", "Campo obrigatório!");
+    Helper.validateInputStatus(sut, "password", errorMessage);
     Helper.validateInputStatus(
       sut,
       "passwordConfirmation",
@@ -54,5 +54,13 @@ describe("SignUp Component", () => {
     });
     Helper.populateField(sut, "name");
     Helper.validateInputStatus(sut, "name", validationStub.errorMessage);
+  });
+
+  test("Should show password error if validation fails", () => {
+    const { sut, validationStub } = makeSut({
+      errorMessage: faker.random.words(),
+    });
+    Helper.populateField(sut, "password");
+    Helper.validateInputStatus(sut, "password", validationStub.errorMessage);
   });
 });
