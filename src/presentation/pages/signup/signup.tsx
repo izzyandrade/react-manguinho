@@ -51,7 +51,7 @@ const SignUp: React.FC<SignUpProps> = ({ validation }) => {
         state.password
       ),
     });
-  }, [state.email, state.password]);
+  }, [state.email, state.password, state.name, state.passwordConfirmation]);
 
   return (
     <div className={Styles.signUp}>
@@ -87,7 +87,12 @@ const SignUp: React.FC<SignUpProps> = ({ validation }) => {
             className={Styles.submit}
             type="submit"
             data-testid="submit-button"
-            disabled
+            disabled={
+              !!state.emailError ||
+              !!state.passwordError ||
+              !!state.passwordConfirmationError ||
+              !!state.nameError
+            }
           >
             Cadastrar
           </button>
