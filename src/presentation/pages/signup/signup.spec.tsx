@@ -9,6 +9,7 @@ import {
 } from "@testing-library/react";
 import { Helper, ValidationStub, AddAccountSpy } from "@/presentation/test";
 import faker from "@faker-js/faker";
+import { EmailInUseError } from "@/domain/error";
 
 type SutTypes = {
   sut: RenderResult;
@@ -171,5 +172,15 @@ describe("SignUp Component", () => {
     });
     await simulateValidSubmit(sut);
     expect(addAccountSpy.callsCount).toBe(0);
+  });
+
+  test("Should present error if AddAccount fails", async () => {
+    const { sut, addAccountSpy } = makeSut();
+    const error = new EmailInUseError();
+    jest.spyOn(addAccountSpy, "add").mockRejectedValueOnce(error);
+    await simulateValidSubmit(sut);
+    const errorWrap = sut.getByTestId("error-wrap");
+    Helper.testElementText(sut, "main-error", error.message);
+    expect(errorWrap.childElementCount).toBe(1);
   });
 });
