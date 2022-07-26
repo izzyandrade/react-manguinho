@@ -4,6 +4,7 @@ import {
   FormStatus,
   Input,
   LoginHeader,
+  SubmitButton,
 } from "@/presentation/components";
 import FormContext from "@/presentation/contexts/form/form-context";
 import Styles from "./styles.scss";
@@ -13,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 type State = {
   isLoading: boolean;
+  isFormInvalid: boolean;
   errorMessage: string;
   email: string;
   name: string;
@@ -37,6 +39,7 @@ const SignUp: React.FC<SignUpProps> = ({
 }) => {
   const [state, setState] = useState<State>({
     isLoading: false,
+    isFormInvalid: true,
     errorMessage: "",
     email: "",
     name: "",
@@ -51,15 +54,24 @@ const SignUp: React.FC<SignUpProps> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
+    const emailError = validation.validate("email", state.email);
+    const nameError = validation.validate("name", state.name);
+    const passwordError = validation.validate("password", state.password);
+    const passwordConfirmationError = validation.validate(
+      "passwordConfirmation",
+      state.password
+    );
     setState({
       ...state,
-      emailError: validation.validate("email", state.email),
-      nameError: validation.validate("name", state.name),
-      passwordError: validation.validate("password", state.password),
-      passwordConfirmationError: validation.validate(
-        "passwordConfirmation",
-        state.password
-      ),
+      emailError,
+      nameError,
+      passwordError,
+      passwordConfirmationError,
+      isFormInvalid:
+        !!nameError ||
+        !!emailError ||
+        !!passwordError ||
+        !!passwordConfirmationError,
     });
   }, [state.email, state.password, state.name, state.passwordConfirmation]);
 
@@ -68,14 +80,7 @@ const SignUp: React.FC<SignUpProps> = ({
   ): Promise<void> => {
     event.preventDefault();
     try {
-      if (
-        state.isLoading ||
-        state.emailError ||
-        state.nameError ||
-        state.passwordError ||
-        state.passwordConfirmationError
-      )
-        return;
+      if (state.isLoading || state.isFormInvalid) return;
       setState({
         ...state,
         isLoading: true,
@@ -127,19 +132,8 @@ const SignUp: React.FC<SignUpProps> = ({
             placeholder="Confirme sua senha"
             error={state.passwordConfirmationError}
           />
-          <button
-            className={Styles.submit}
-            type="submit"
-            data-testid="submit-button"
-            disabled={
-              !!state.emailError ||
-              !!state.passwordError ||
-              !!state.passwordConfirmationError ||
-              !!state.nameError
-            }
-          >
-            Cadastrar
-          </button>
+          <SubmitButton style={Styles.submit} text="Cadastrar" />
+
           <span
             onClick={() => {
               navigate("/login");

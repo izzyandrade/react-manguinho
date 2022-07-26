@@ -5,6 +5,7 @@ import {
   LoginHeader,
   Input,
   FormStatus,
+  SubmitButton,
 } from "@/presentation/components";
 import FormContext from "@/presentation/contexts/form/form-context";
 import { Validation } from "@/presentation/protocols/validation";
@@ -13,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 type State = {
   isLoading: boolean;
+  isFormInvalid: boolean;
   errorMessage: string;
   email: string;
   password: string;
@@ -33,6 +35,7 @@ const Login: React.FC<Props> = ({
 }: Props) => {
   const [state, setState] = useState<State>({
     isLoading: false,
+    isFormInvalid: true,
     errorMessage: "",
     email: "",
     password: "",
@@ -43,10 +46,13 @@ const Login: React.FC<Props> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
+    const emailError = validation.validate("email", state.email);
+    const passwordError = validation.validate("password", state.password);
     setState({
       ...state,
-      emailError: validation.validate("email", state.email),
-      passwordError: validation.validate("password", state.password),
+      emailError,
+      passwordError,
+      isFormInvalid: !!emailError || !!passwordError,
     });
   }, [state.email, state.password]);
 
@@ -55,7 +61,7 @@ const Login: React.FC<Props> = ({
   ): Promise<void> => {
     event.preventDefault();
     try {
-      if (state.isLoading || state.emailError || state.passwordError) return;
+      if (state.isLoading || state.isFormInvalid) return;
       setState({
         ...state,
         isLoading: true,
@@ -94,14 +100,7 @@ const Login: React.FC<Props> = ({
             placeholder="Insira sua senha"
             error={state.passwordError}
           />
-          <button
-            className={Styles.submit}
-            type="submit"
-            data-testid="submit-button"
-            disabled={!!state.emailError || !!state.passwordError}
-          >
-            Entrar
-          </button>
+          <SubmitButton style={Styles.submit} text="Entrar" />
           <span
             onClick={() => {
               navigate("/signup");
