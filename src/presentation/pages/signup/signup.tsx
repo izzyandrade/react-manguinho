@@ -140,7 +140,13 @@ const SignUp: React.FC<SignUpProps> = ({
           >
             Cadastrar
           </button>
-          <span className={Styles.loginLink} data-testid="login-link">
+          <span
+            onClick={() => {
+              navigate("/login");
+            }}
+            className={Styles.loginLink}
+            data-testid="login-link"
+          >
             Já tem uma conta? Clique para entrar
           </span>
           <FormStatus />
