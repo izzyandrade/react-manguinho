@@ -7,7 +7,12 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react";
-import { Helper, ValidationStub, AddAccountSpy } from "@/presentation/test";
+import {
+  Helper,
+  ValidationStub,
+  AddAccountSpy,
+  SaveAccessTokenMock,
+} from "@/presentation/test";
 import faker from "@faker-js/faker";
 import { EmailInUseError } from "@/domain/error";
 
@@ -15,6 +20,7 @@ type SutTypes = {
   sut: RenderResult;
   validationStub: ValidationStub;
   addAccountSpy: AddAccountSpy;
+  saveAccessTokenMock: SaveAccessTokenMock;
 };
 
 type SutParams = {
@@ -24,16 +30,29 @@ type SutParams = {
 const makeSut = ({ errorMessage }: SutParams = {}): SutTypes => {
   const validationStub = new ValidationStub();
   const addAccountSpy = new AddAccountSpy();
+  const saveAccessTokenMock = new SaveAccessTokenMock();
   validationStub.errorMessage = errorMessage || null;
   const sut = render(
-    <SignUp validation={validationStub} addAccount={addAccountSpy} />
+    <SignUp
+      validation={validationStub}
+      addAccount={addAccountSpy}
+      saveAccessToken={saveAccessTokenMock}
+    />
   );
   return {
     sut,
     validationStub,
     addAccountSpy,
+    saveAccessTokenMock,
   };
 };
+
+const mockedUseNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  ...(jest.requireActual("react-router-dom") as any),
+  useNavigate: () => mockedUseNavigate,
+}));
 
 const simulateValidSubmit = async (
   sut: RenderResult,
@@ -182,5 +201,14 @@ describe("SignUp Component", () => {
     const errorWrap = sut.getByTestId("error-wrap");
     Helper.testElementText(sut, "main-error", error.message);
     expect(errorWrap.childElementCount).toBe(1);
+  });
+
+  test("Should call SaveAccessToken and navigate to homepage on auth success", async () => {
+    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut();
+    await simulateValidSubmit(sut);
+    expect(saveAccessTokenMock.accessToken).toBe(
+      addAccountSpy.account.accessToken
+    );
+    expect(mockedUseNavigate).toHaveBeenCalledWith("/", { replace: true });
   });
 });
