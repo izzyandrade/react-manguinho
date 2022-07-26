@@ -8,7 +8,8 @@ import {
 import FormContext from "@/presentation/contexts/form/form-context";
 import Styles from "./styles.scss";
 import { Validation } from "@/presentation/protocols/validation";
-import { AddAccount } from "@/domain/usecases";
+import { AddAccount, SaveAccessToken } from "@/domain/usecases";
+import { useNavigate } from "react-router-dom";
 
 type State = {
   isLoading: boolean;
@@ -26,9 +27,14 @@ type State = {
 type SignUpProps = {
   validation: Validation;
   addAccount: AddAccount;
+  saveAccessToken: SaveAccessToken;
 };
 
-const SignUp: React.FC<SignUpProps> = ({ validation, addAccount }) => {
+const SignUp: React.FC<SignUpProps> = ({
+  validation,
+  addAccount,
+  saveAccessToken,
+}) => {
   const [state, setState] = useState<State>({
     isLoading: false,
     errorMessage: "",
@@ -41,6 +47,8 @@ const SignUp: React.FC<SignUpProps> = ({ validation, addAccount }) => {
     passwordError: "",
     passwordConfirmationError: "",
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setState({
@@ -72,12 +80,14 @@ const SignUp: React.FC<SignUpProps> = ({ validation, addAccount }) => {
         ...state,
         isLoading: true,
       });
-      await addAccount.add({
+      const account = await addAccount.add({
         email: state.email,
         name: state.name,
         password: state.password,
         passwordConfirmation: state.passwordConfirmation,
       });
+      saveAccessToken.save(account.accessToken);
+      navigate("/", { replace: true });
     } catch (err) {
       setState({ ...state, errorMessage: err.message, isLoading: false });
     }
