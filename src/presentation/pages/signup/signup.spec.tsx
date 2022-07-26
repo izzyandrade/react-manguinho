@@ -211,4 +211,11 @@ describe("SignUp Component", () => {
     );
     expect(mockedUseNavigate).toHaveBeenCalledWith("/", { replace: true });
   });
+
+  test("Should go to login page on clicking the link", () => {
+    const { sut } = makeSut();
+    const loginLink = sut.getByTestId("login-link");
+    fireEvent.click(loginLink);
+    expect(mockedUseNavigate).toHaveBeenCalledWith("/login");
+  });
 });
