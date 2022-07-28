@@ -5,6 +5,7 @@ import { SignUp } from "@/presentation/pages";
 
 type Props = {
   MakeLogin: React.FC;
+  MakeSignUp: React.FC;
 };
 
 const Router: React.FC<Props> = ({ MakeLogin }) => {
