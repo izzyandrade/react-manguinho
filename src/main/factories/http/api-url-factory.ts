@@ -1,3 +1,5 @@
 export const makeApiUrl = (path: string): string => {
-  return `${process.env.API_URL}${path}`;
+  const baseURL = process.env.API_URL.replaceAll('"', "");
+  const apiURL = baseURL + path;
+  return apiURL;
 };
