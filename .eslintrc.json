@@ -4,24 +4,27 @@
       "version": "detect"
     }
   },
-  "extends": ["standard-with-typescript", "prettier", "plugin:react/recommended"],
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
+  "extends": ["standard-with-typescript", "prettier", "plugin:react/recommended", "plugin:cypress/recommended"],
   "rules": {
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/no-misused-promises": [
-      "error",
-      {
-        "checksVoidReturn": false
-      }
-    ],
+    "@typescript-eslint/no-misused-promises": "off",
     "prettier/prettier": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
   },
-  "plugins": ["prettier", "react"]
+  "plugins": ["prettier", "react", "cypress"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "cypress/globals": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "project": ["tsconfig.json"] ,
+    "sourceType": "module"
+  }
 }

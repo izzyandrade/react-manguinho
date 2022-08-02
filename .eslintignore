@@ -3,3 +3,6 @@
 /coverage
 public
 *.scss
+*.json
+cypress.config.ts
+src/main/test/cypress

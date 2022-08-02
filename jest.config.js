@@ -8,9 +8,10 @@ module.exports = {
     '!<rootDir>/src/presentation/pages/index.ts',
     '!<rootDir>/src/domain/**/*/index.ts',
     '!<rootDir>/src/data/usecases/index.ts',
-    '!**/*.d.ts'
+    '!**/*.d.ts',
   ],
   coverageDirectory: 'coverage',
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/src/main/test/cypress'],
   testEnvironment: 'jsdom',
   transform: {
     '.+\\.(ts|tsx)$': 'ts-jest'
