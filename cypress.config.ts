@@ -1,16 +1,16 @@
-import { defineConfig } from "cypress";
-import webpackPreprocessor from "@cypress/webpack-preprocessor";
+import { defineConfig } from 'cypress';
+import webpackPreprocessor from '@cypress/webpack-preprocessor';
 
 const webpackOptions = {
   webpackOptions: {
     resolve: {
-      extensions: [".ts", ".tsx", ".js", ".jsx"],
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: "ts-loader",
+          loader: 'ts-loader',
           exclude: /node_modules/,
         },
       ],
@@ -21,11 +21,11 @@ const webpackOptions = {
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
-      on("file:preprocessor", webpackPreprocessor(webpackOptions));
+      on('file:preprocessor', webpackPreprocessor(webpackOptions));
     },
-    baseUrl: "http://localhost:3000",
+    baseUrl: 'http://localhost:3000',
     fixturesFolder: false,
-    supportFile: false,
-    specPattern: "src/main/test/cypress/integration/**/*.cy.ts",
+    supportFile: 'src/main/test/cypress/support/e2e.js',
+    specPattern: 'src/main/test/cypress/integration/**/*.cy.ts',
   },
 });
