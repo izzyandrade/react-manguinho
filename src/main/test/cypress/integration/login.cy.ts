@@ -80,4 +80,9 @@ describe('Login', () => {
       assert.isOk(window.localStorage.getItem('accessToken'))
     );
   });
+
+  it('should navigate to signup if button is clicked', () => {
+    cy.getByTestId('signup-link').click();
+    cy.url().should('eq', `${baseUrl}/signup`);
+  });
 });
