@@ -15,16 +15,6 @@ body {
 input[type="password"],
 input[type="email"],
 input[type="text"] {
-  border: 1px solid grey;
-  border-radius: 4px;
-  line-height: 40px;
-  background-color: $lightGrey;
-  color: $black;
-  font-size: 14px;
-  font-weight: 300;
-  width: 100%;
-  padding: 0 40px 0 10px;
-  &:focus {
-    outline-color: $darkGrey;
-  }
+  border: none;
+  outline: none;
 }
