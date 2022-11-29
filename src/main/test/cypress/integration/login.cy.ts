@@ -79,8 +79,8 @@ describe("Login", () => {
         },
       }
     );
-    cy.getByTestId("email").type("mango@gmail.com");
-    cy.getByTestId("password").type("12345");
+    cy.getByTestId("email").type(faker.internet.email());
+    cy.getByTestId("password").type(faker.random.alphaNumeric(5));
     cy.getByTestId("submit-button").click();
     cy.getByTestId("spinner").should("not.exist");
     cy.getByTestId("main-error").should("not.exist");
