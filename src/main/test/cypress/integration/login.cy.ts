@@ -3,11 +3,11 @@ import {
   testInputStatus,
   testLocalStorageItem,
   testWindowUrl,
-} from "../../support/helpers";
+} from "../support/helpers";
 import {
   mockInvalidCredentialsError,
   mockSuccessLoginResponse,
-} from "./login-mocks";
+} from "./mocks/login-mocks";
 
 const simulateValidInputs = () => {
   cy.getByTestId("email").type(faker.internet.email());
