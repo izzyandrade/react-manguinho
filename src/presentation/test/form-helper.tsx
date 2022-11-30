@@ -31,11 +31,16 @@ export const testButtonIsDisabled = (
 export const validateInputStatus = (
   sut: RenderResult,
   inputField: string,
-  validationError?: string
+  validationError: string = ""
 ): void => {
-  const inputElement = sut.getByTestId(`${inputField}-status`);
-  expect(inputElement.title).toBe(validationError || "Tudo certo!");
-  testElementText(sut, `${inputField}-status`, validationError ? "🔴" : "🟢");
+  const inputWrap = sut.getByTestId(`${inputField}-wrap`);
+  const inputLabel = sut.getByTestId(`${inputField}-label`);
+  const inputElement = sut.getByTestId(`${inputField}`);
+  expect(inputWrap.getAttribute("data-status")).toBe(
+    validationError ? "invalid" : "valid"
+  );
+  expect(inputLabel.title).toBe(validationError);
+  expect(inputElement.title).toBe(validationError);
 };
 
 export const populateField = (
