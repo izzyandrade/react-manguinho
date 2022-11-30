@@ -90,6 +90,22 @@ describe("Login", () => {
     );
   });
 
+  it("should prevent multiple submits", () => {
+    cy.intercept(
+      { method: "POST", url: /login/ },
+      {
+        statusCode: 200,
+        body: {
+          accessToken: faker.datatype.uuid(),
+        },
+      }
+    ).as("loginRequest");
+    cy.getByTestId("email").type(faker.internet.email());
+    cy.getByTestId("password").type(faker.random.alphaNumeric(5));
+    cy.getByTestId("submit-button").dblclick();
+    cy.get("@loginRequest.all").should("have.length", 1);
+  });
+
   it("should navigate to signup if button is clicked", () => {
     cy.getByTestId("signup-link").click();
     cy.url().should("eq", `${baseUrl}/signup`);
