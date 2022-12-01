@@ -1,6 +1,13 @@
 import { faker } from "@faker-js/faker";
-import { testInputStatus, testWindowUrl } from "../support/helpers";
-import { mockEmailInUseError } from "./mocks/signup-mocks";
+import {
+  testInputStatus,
+  testLocalStorageItem,
+  testWindowUrl,
+} from "../support/helpers";
+import {
+  mockEmailInUseError,
+  mockSuccessSignUpResponse,
+} from "./mocks/signup-mocks";
 
 const simulateValidInputs = () => {
   const password = faker.random.alphaNumeric(5);
@@ -57,5 +64,14 @@ describe("Signup", () => {
       "O email já está sendo utilizado"
     );
     testWindowUrl("/signup");
+  });
+
+  it("Should save access token and navigate if valid credentials are provided", () => {
+    mockSuccessSignUpResponse();
+    simulateValidInputs();
+    cy.getByTestId("submit-button").click();
+    cy.getByTestId("error-wrap").should("not.exist");
+    testWindowUrl("/");
+    testLocalStorageItem("accessToken");
   });
 });
