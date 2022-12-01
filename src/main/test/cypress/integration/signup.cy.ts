@@ -81,4 +81,9 @@ describe("Signup", () => {
     cy.getByTestId("submit-button").dblclick();
     cy.get("@request.all").should("have.length", 1);
   });
+
+  it("should navigate to login if button is clicked", () => {
+    cy.getByTestId("login-link").click();
+    testWindowUrl("/login");
+  });
 });
