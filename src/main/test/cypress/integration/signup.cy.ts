@@ -1,6 +1,14 @@
 import { faker } from "@faker-js/faker";
 import { testInputStatus } from "../support/helpers";
 
+const simulateValidInputs = () => {
+  const password = faker.random.alphaNumeric(5);
+  cy.getByTestId("email").type(faker.internet.email());
+  cy.getByTestId("name").type(faker.internet.email());
+  cy.getByTestId("password").type(password);
+  cy.getByTestId("passwordConfirmation").type(password);
+};
+
 describe("Signup", () => {
   beforeEach(() => {
     cy.visit("/signup");
@@ -25,6 +33,16 @@ describe("Signup", () => {
     testInputStatus("password", "Campo inválido");
     testInputStatus("passwordConfirmation", "Campo inválido");
     cy.getByTestId("submit-button").should("have.attr", "disabled");
+    cy.getByTestId("error-wrap").should("not.have.descendants");
+  });
+
+  it("Should present valid state if form is valid", () => {
+    simulateValidInputs();
+    testInputStatus("email");
+    testInputStatus("name");
+    testInputStatus("password");
+    testInputStatus("passwordConfirmation");
+    cy.getByTestId("submit-button").should("not.have.attr", "disabled");
     cy.getByTestId("error-wrap").should("not.have.descendants");
   });
 });
