@@ -74,4 +74,11 @@ describe("Signup", () => {
     testWindowUrl("/");
     testLocalStorageItem("accessToken");
   });
+
+  it("should prevent multiple submits", () => {
+    mockSuccessSignUpResponse();
+    simulateValidInputs();
+    cy.getByTestId("submit-button").dblclick();
+    cy.get("@request.all").should("have.length", 1);
+  });
 });
