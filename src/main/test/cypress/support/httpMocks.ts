@@ -25,3 +25,15 @@ export const mockSuccessResponse = (
     }
   ).as("request");
 };
+
+export const mockEmailInUseError = (url: RegExp): void => {
+  cy.intercept(
+    { method: "POST", url },
+    {
+      statusCode: 403,
+      body: {
+        error: "O email já está sendo utilizado",
+      },
+    }
+  ).as("request");
+};

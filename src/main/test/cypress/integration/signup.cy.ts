@@ -1,10 +1,11 @@
 import { faker } from "@faker-js/faker";
-import { testInputStatus } from "../support/helpers";
+import { testInputStatus, testWindowUrl } from "../support/helpers";
+import { mockEmailInUseError } from "./mocks/signup-mocks";
 
 const simulateValidInputs = () => {
   const password = faker.random.alphaNumeric(5);
   cy.getByTestId("email").type(faker.internet.email());
-  cy.getByTestId("name").type(faker.internet.email());
+  cy.getByTestId("name").type(faker.random.words(2));
   cy.getByTestId("password").type(password);
   cy.getByTestId("passwordConfirmation").type(password);
 };
@@ -44,5 +45,17 @@ describe("Signup", () => {
     testInputStatus("passwordConfirmation");
     cy.getByTestId("submit-button").should("not.have.attr", "disabled");
     cy.getByTestId("error-wrap").should("not.have.descendants");
+  });
+
+  it("should present EmailInUseError if duplicate email is provided", () => {
+    mockEmailInUseError();
+    simulateValidInputs();
+    cy.getByTestId("submit-button").click();
+    cy.getByTestId("spinner").should("not.exist");
+    cy.getByTestId("main-error").should(
+      "contain.text",
+      "O email já está sendo utilizado"
+    );
+    testWindowUrl("/signup");
   });
 });
